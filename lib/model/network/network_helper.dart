@@ -30,7 +30,7 @@ class ApiCall {
       return regResponse;
     } catch (e) {
       print(e);
-      throw (e);
+      rethrow;
     }
   }
 

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "624231473490",
+    "project_id": "authentikate-8310b",
+    "storage_bucket": "authentikate-8310b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:624231473490:android:22b835e0aa3b8c742a1a8b",
+        "android_client_info": {
+          "package_name": "com.lorglow.authentikate"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA7mA-ZtI3ik3ijh_OsOuOgZQDMjn-QubE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
