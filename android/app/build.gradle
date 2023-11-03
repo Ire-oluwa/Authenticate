@@ -68,6 +68,8 @@ flutter {
 
 dependencies {
     implementation platform('com.google.firebase:firebase-bom:32.5.0')
+    implementation 'com.facebook.android:facebook-login:latest.release'
+
 }
 
 //apply plugin: 'com.google.gms:google-services'

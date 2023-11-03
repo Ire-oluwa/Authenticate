@@ -10,7 +10,7 @@ class ApiCall {
   Future<RegistrationResponse> createUser(
       String name, String email, String phone, String password) async {
     try {
-      final body = {
+      final body = <String, dynamic>{
         "name": name,
         "email": email,
         "phone": phone,
@@ -29,8 +29,8 @@ class ApiCall {
 
       return regResponse;
     } catch (e) {
-      print(e);
-      rethrow;
+      print("Error: $e");
+      throw("Error: ${e.toString().trim()}");
     }
   }
 

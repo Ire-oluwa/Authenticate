@@ -5,7 +5,7 @@ class Strings {
   static const agree = "I agree to the";
   static const terms = "Terms of Service";
   static const haveAnAccount = "Have an account?";
-  static const signIn = "Sign In?";
+  static const signIn = "Sign In";
   static const signUp = "Sign Up";
   static const name = "Name";
   static const phone = "Phone";

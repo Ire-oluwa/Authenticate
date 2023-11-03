@@ -70,6 +70,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 SizedBox(height: 20.h),
+
+                /// SIGN-UP
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -96,7 +98,31 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ],
                 ),
-                SizedBox(height: 280.h),
+                SizedBox(height: 10.h),
+
+                ///SOCIAL MEDIA SIGN-IN
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    GestureDetector(
+                      onTap: () => _googleSignIn(context: context),
+                      child: Image.asset(
+                        "assets/images/google_logo.png",
+                        width: 40.w,
+                        height: 40.h,
+                      ),
+                    ),
+                    SizedBox(width: 10.w),
+                    Image.asset(
+                      "assets/images/Facebook_logo.png",
+                      width: 40.w,
+                      height: 40.h,
+                    ),
+                  ],
+                ),
+                SizedBox(height: 260.h),
+
+                /// SIGN-IN
                 BlocConsumer<LoginBloc, LoginState>(
                   listener: (BuildContext context, LoginState state) {
                     if (state is LoginLoaded &&
@@ -148,10 +174,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: GestureDetector(
                           onTap: () {
                             Future.delayed(const Duration(seconds: 3));
-                            loginBloc.add(GetLogin(email: _email.text,
-                                password: _password.text));
-                            print(loginBloc.loginResponse?.success
-                                .toString());
+                            loginBloc.add(GetLogin(
+                                email: _email.text, password: _password.text));
+                            print(loginBloc.loginResponse?.success.toString());
                           },
                           child: Container(
                             height: 40.h,
@@ -212,6 +237,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
+  //Google SignIn Process
   void _googleSignIn({required BuildContext context}) async {
     try {
       GoogleSignIn googleSignIn = GoogleSignIn();
@@ -231,14 +257,44 @@ class _LoginScreenState extends State<LoginScreen> {
       );
 
       Fluttertoast.showToast(
-          msg: googleUser.email, backgroundColor: kBlue, textColor: kWhite);
+        msg: googleUser.email,
+        backgroundColor: kBlue,
+        textColor: kWhite,
+      );
+      () => Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (context) => const MainScreen(),
+            ),
+          );
     } catch (error) {
       print("Google Sign-In Error: $error");
 
       Fluttertoast.showToast(
-          msg: Strings.googleSignInError,
-          backgroundColor: kRed,
-          textColor: kWhite);
+        msg: Strings.googleSignInError,
+        backgroundColor: kRed,
+        textColor: kWhite,
+      );
     }
   }
+
+  //Facebook SignIn Process
+  // void _facebookSignInProcess(BuildContext context) async {
+  //   LoginResult result = await FacebookAuth.instance.login();
+  //   ProgressDialogUtils.showProgressDialog(context);
+  //   if (result.status == LoginStatus.success) {
+  //     AccessToken accessToken = result.accessToken!;
+  //     Map<String, dynamic> userData = await FacebookAuth.i.getUserData(
+  //       fields: KeyConstants.facebookUserDataFields,
+  //     );
+  //     ProgressDialogUtils.dismissProgressDialog();
+  //     Fluttertoast.showToast(
+  //         msg: userData[KeyConstants.emailKey],
+  //         backgroundColor: Colors.blue,
+  //         textColor: Colors.white);
+  //     LogUtils.showLog("${accessToken.userId}");
+  //     LogUtils.showLog("$userData");
+  //   } else {
+  //     ProgressDialogUtils.dismissProgressDialog();
+  //   }
+  // }
 }
