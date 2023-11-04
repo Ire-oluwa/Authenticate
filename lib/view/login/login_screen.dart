@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:authentikate/model/google_sign_in/res_google_sign_in.dart';
 import 'package:authentikate/utils/constants.dart';
 import 'package:authentikate/utils/strings.dart';
@@ -9,9 +11,11 @@ import 'package:authentikate/view/main_screen/main_screen.dart';
 import 'package:authentikate/view/registration/registration_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:sn_progress_dialog/sn_progress_dialog.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -113,10 +117,16 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                     SizedBox(width: 10.w),
-                    Image.asset(
-                      "assets/images/Facebook_logo.png",
-                      width: 40.w,
-                      height: 40.h,
+                    GestureDetector(
+                      onTap: () {
+                        // print("Sign in: Facebook");
+                        _facebookSignIn(context);
+                      },
+                      child: Image.asset(
+                        "assets/images/Facebook_logo.png",
+                        width: 40.w,
+                        height: 40.h,
+                      ),
                     ),
                   ],
                 ),
@@ -277,24 +287,73 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  //Facebook SignIn Process
-  // void _facebookSignInProcess(BuildContext context) async {
-  //   LoginResult result = await FacebookAuth.instance.login();
-  //   ProgressDialogUtils.showProgressDialog(context);
-  //   if (result.status == LoginStatus.success) {
-  //     AccessToken accessToken = result.accessToken!;
-  //     Map<String, dynamic> userData = await FacebookAuth.i.getUserData(
-  //       fields: KeyConstants.facebookUserDataFields,
-  //     );
-  //     ProgressDialogUtils.dismissProgressDialog();
-  //     Fluttertoast.showToast(
-  //         msg: userData[KeyConstants.emailKey],
-  //         backgroundColor: Colors.blue,
-  //         textColor: Colors.white);
-  //     LogUtils.showLog("${accessToken.userId}");
-  //     LogUtils.showLog("$userData");
-  //   } else {
-  //     ProgressDialogUtils.dismissProgressDialog();
-  //   }
-  // }
+// Facebook SignIn Process
+  void _facebookSignIn(BuildContext context) async {
+    try {
+      if (mounted) {
+        ProgressDialog(context: context).show(
+          msg: "Signing in with Facebook...",
+          progressType: ProgressType.valuable,
+        );
+      }
+      LoginResult result = await FacebookAuth.instance.login();
+      if (result.status == LoginStatus.success) {
+        AccessToken? accessToken = result.accessToken;
+        Map<String, dynamic> userData = await FacebookAuth.i.getUserData(
+            // fields: KeyConstants.facebookUserDataFields,
+            );
+        if (mounted) {
+          ProgressDialog(context: context).close();
+        }
+        Fluttertoast.showToast(
+          msg: userData.toString(),
+          backgroundColor: Colors.blue,
+          textColor: Colors.white,
+        );
+        log("${accessToken?.userId}");
+        log("$userData");
+      }
+    } catch (e) {
+      if (mounted) {
+        ProgressDialog(context: context).close();
+        Fluttertoast.showToast(
+          msg: "An error occurred while signing in with Facebook.",
+        );
+      }
+    }
+  }
+
+//   Future<void> _facebookSignIn(BuildContext context) async {
+//     final ProgressDialog pd = ProgressDialog(context: context);
+//     try {
+//       final ProgressDialog pd = ProgressDialog(context: context);
+//       final LoginResult result = await FacebookAuth.instance.login();
+//       pd.show(
+//         msg: "Signing in with Facebook...",
+//         progressType: ProgressType.valuable,
+//       );
+//       Future.delayed(const Duration(seconds: 2)).then((value) => pd.close());
+//       // pd.close();
+//
+//       if (result.status == LoginStatus.success) {
+//         final AccessToken? accessToken = result.accessToken;
+//         final Map<String, dynamic> userData =
+//             await FacebookAuth.instance.getUserData();
+//         log(userData.toString());
+//         if (mounted) {
+//           Navigator.of(context).pushReplacement(
+//             MaterialPageRoute(
+//               builder: (context) => const MainScreen(),
+//             ),
+//           );
+//         }
+//       }
+//     } catch (e) {
+//       pd.close();
+//       log("Facebook login error: ${e.toString()}");
+//       Fluttertoast.showToast(
+//         msg: "An error occurred while signing in with Facebook.",
+//       );
+//     }
+//   }
 }

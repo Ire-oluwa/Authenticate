@@ -4,4 +4,5 @@
     <string name="app_name">authentikate</string>
     <string name="facebook_app_id">1574159503354115</string>
     <string name="fb_login_protocol_scheme">fb1574159503354115</string>
+    <string name="facebook_client_token">322c2fe0e6a8484094620a666ad62ca1</string>
 </resources>
